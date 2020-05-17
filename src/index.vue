@@ -70,6 +70,15 @@
                             {{chunk.name}}
                         </v-chip>
                     </v-card-text>
+
+                    <v-card-actions>
+                        <v-btn
+                                text
+                                color="orange"
+                                @click="() => handleClickCardButton(chunk)"
+                        >{{chunk.points.length}} Points
+                        </v-btn>
+                    </v-card-actions>
                 </v-card>
             </div>
         </v-layout>
@@ -100,6 +109,12 @@
                 return chunks.reduce((totalPoints, chunk) => {
                     return totalPoints + chunk.points.length;
                 }, 0);
+            },
+            handleClickCardButton: function (chunk) {
+                const pointIdListText = chunk.points.reduce((total, point, index) => {
+                    return total.concat((index === 0 ? '' : ', ').concat(`${point.point_id}`));
+                }, '');
+                alert(`Point ID: ${pointIdListText}`);
             },
             handleSelectExpressWay: function () {
                 //alert(this.selectedExpressWay.id);
