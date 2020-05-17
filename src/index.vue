@@ -103,7 +103,7 @@
         computed: {},
         methods: {
             getCardColor: function (chunk) {
-                return chunk.name_a != null ? '#ffeefe' : 'white';
+                return chunk.name_a != null ? '#ffeefe' : '#f8f8f8';
             },
             getNumPoints: function (chunks) {
                 return chunks.reduce((totalPoints, chunk) => {
