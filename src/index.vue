@@ -76,7 +76,7 @@
                                 text
                                 color="orange"
                                 @click="() => handleClickCardButton(chunk)"
-                        >{{chunk.points.length}} Points
+                        >{{chunk.points.length}} Point{{chunk.points.length > 1 ? 's' : ''}}
                         </v-btn>
                     </v-card-actions>
                 </v-card>
