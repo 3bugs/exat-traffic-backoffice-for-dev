@@ -1,6 +1,6 @@
 <template>
     <layout>
-        <v-layout column align-content-start class="pa-10">
+        <v-layout column align-content-start class="pa-4">
             <!--<v-flex>
               <v-tabs>
                 <v-tab
