@@ -2,6 +2,11 @@
   <v-app>
     <div style="display: flex; flex-direction: column; padding: 5px; border: 0px solid red;">
       <div style="flex: 1; overflow: auto; width: 620px;">
+        <v-alert
+          v-if="alertMessage != null"
+          type="info"
+          dismissible
+        ><span style="white-space: pre;">{{alertMessage}}</span></v-alert>
         <v-layout column align-content-start class="pa-1">
           <div class="mt-1">
             <h3 style="color: #333">
@@ -115,6 +120,7 @@
         },
         data: () => {
             return {
+                alertMessage: null,
                 expressWayList: getExpressWayList(),
                 mapImageDataList: getMapImageDataList(),
                 selectedExpressWay: null,
@@ -163,7 +169,7 @@
                 });
             });
 
-            let msg = '----------\n\n';
+            let msg = '----------\n';
             if (imageChunkCount < dataChunkCount) {
                 msg += `มีข้อมูลใน API จำนวน ${dataChunkCount - imageChunkCount} chunk ที่ไม่ได้สัมพันธ์กับเส้นบน Schematic Map`;
             } else if (imageChunkCount > dataChunkCount) {
@@ -171,7 +177,7 @@
             } else {
                 msg = '';
             }
-            alert(`Total image chunk: ${imageChunkCount}\nTotal API data chunk: ${dataChunkCount}\n${msg}`);
+            this.alertMessage = `Total image chunk: ${imageChunkCount}\nTotal API data chunk: ${dataChunkCount}\n${msg}`;
         },
         methods: {
             getCardColor: function (chunk) {
