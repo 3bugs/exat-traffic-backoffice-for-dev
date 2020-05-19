@@ -1,7 +1,15 @@
 <template>
   <v-app>
     <div style="flex: 1; display: flex; flex-direction: row; align-items: stretch; padding: 5px; border: 0px solid red;">
-      <div style="overflow: auto; width: 620px; border: 0px solid pink">
+      <div :style="`overflow: auto; width: 620px; border: 0px solid pink`">
+        <v-alert
+          v-if="windowWidth < 1366"
+          border="top"
+          colored-border
+          type="error"
+          elevation="2"
+          dismissible
+        ><span style="white-space: pre;">การแสดงผลหน้านี้เหมาะสำหรับจอกว้าง 1,366 pixel ขึ้นไป</span></v-alert>
         <v-alert
           v-if="alertMessage != null"
           border="top"
@@ -193,7 +201,10 @@
             },
             mapScale: function () {
                 return (this.windowHeight + (420 * (this.windowHeight / 2160))) / 2160;
-            }
+            },
+            /*listWidth: function () {
+                return (this.windowWidth > 1280) ? 620 : 620 - (1366 - 1280);
+            }*/
         },
         created: function () {
             window.addEventListener('resize', this.handleChangeWindowSize);
