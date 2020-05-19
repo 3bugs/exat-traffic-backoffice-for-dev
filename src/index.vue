@@ -279,7 +279,7 @@
                 const imageList = this.mapImageDataList.filter(mapImageData => {
                     return this.selectedExpressWay.id === mapImageData.id;
                 })[0].img.filter(image => {
-                    return image['@data-name'].trim() === chunk.name;
+                    return image['@data-name'].trim() === chunk.name.trim();
                 });
                 return imageList.length === 0 ? null : imageList[0].srcGreen;
             },
