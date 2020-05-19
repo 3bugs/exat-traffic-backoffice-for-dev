@@ -34,7 +34,44 @@
               :hover="true"
               :dark="chunk === selectedChunk"
             >
-              <v-card-title>Chunk ID: {{chunk.chunk_id}}</v-card-title>
+              <v-list-item>
+                <v-list-item-content>
+                  <!--<div class="overline mb-4">OVERLINE</div>-->
+                  <v-list-item-title class="headline mb-1">Chunk ID: {{chunk.chunk_id}}</v-list-item-title>
+                  <v-list-item-subtitle>
+                    <strong>{{chunk.points.length}} Point{{chunk.points.length > 1 ? 's' : ''}}</strong> - ID:
+                    {{
+                    chunk.points.reduce((total, point, index) => {
+                    return total.concat((index === 0 ? '' : ', ').concat(`${point.point_id}`));
+                    }, '')
+                    }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-list-item-avatar
+                  tile
+                  size="40"
+                >
+                  <v-img
+                    :src="getCardImageSource(chunk) || require('./assets/ic_error256.png')"
+                    :contain="true"
+                    width="40px"
+                    height="40px"
+                  >
+                    <template v-slot:placeholder>
+                      <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                      >
+                        <v-progress-circular indeterminate color="grey"></v-progress-circular>
+                      </v-row>
+                    </template>
+                  </v-img>
+                </v-list-item-avatar>
+              </v-list-item>
+
+              <!--<v-card-title>Chunk ID: {{chunk.chunk_id}}</v-card-title>
               <v-card-subtitle>
                 <strong>{{chunk.points.length}} Point{{chunk.points.length > 1 ? 's' : ''}}</strong> - ID:
                 {{
@@ -42,7 +79,7 @@
                 return total.concat((index === 0 ? '' : ', ').concat(`${point.point_id}`));
                 }, '')
                 }}
-              </v-card-subtitle>
+              </v-card-subtitle>-->
               <v-card-text v-if="chunk.name_a != null">
                 <v-chip
                   class="pa-4"
@@ -171,13 +208,13 @@
 
             let msg = '----------\n';
             if (imageChunkCount < dataChunkCount) {
-                msg += `มีข้อมูลใน API จำนวน ${dataChunkCount - imageChunkCount} chunk ที่ไม่ได้สัมพันธ์กับเส้นบน Schematic Map`;
+                msg += `มีข้อมูลใน API จำนวน ${dataChunkCount - imageChunkCount} chunks ที่ไม่ได้สัมพันธ์กับเส้นบน Schematic Map`;
             } else if (imageChunkCount > dataChunkCount) {
                 msg += `มีเส้นบน Schematic Map จำนวน ${imageChunkCount - dataChunkCount} เส้น ที่ไม่ได้สัมพันธ์กับข้อมูล chunk ใดๆใน API`;
             } else {
                 msg = '';
             }
-            this.alertMessage = `Total image chunk: ${imageChunkCount}\nTotal API data chunk: ${dataChunkCount}\n${msg}`;
+            this.alertMessage = `Total image chunks: ${imageChunkCount}\nTotal API data chunks: ${dataChunkCount}\n${msg}`;
         },
         methods: {
             getCardColor: function (chunk) {
@@ -198,7 +235,15 @@
                 } else {
                     src = 'srcOrange';
                 }*/
-                return `https://alg.exat.co.th/media/dashboard/schematic_map/${image[src]}`;
+                return `${image[src]}`;
+            },
+            getCardImageSource: function (chunk) {
+                const imageList = this.mapImageDataList.filter(mapImageData => {
+                    return this.selectedExpressWay.id === mapImageData.id;
+                })[0].img.filter(image => {
+                    return image['@data-name'].trim() === chunk.name;
+                });
+                return imageList.length === 0 ? null : imageList[0].srcGreen;
             },
             getImageStyle: function (image) {
                 let style = image['@style'];
@@ -216,23 +261,24 @@
                     this.blinkTimer = null;
                 } else {
                     this.selectedChunk = chunk;
+
+                    setTimeout(() => {
+                        const imageList = this.mapImageDataList.filter(mapImageData => {
+                            return mapImageData.id === this.selectedExpressWay.id;
+                        })[0]['img'];
+                        const count = imageList.filter(image => {
+                            //return image.id === this.selectedChunk.chunk_id;
+                            return image['@data-name'] === this.selectedChunk.name;
+                        }).length;
+                        if (count === 0) alert('ไม่พบเส้นข้อมูลบน Schematic Map');
+                    }, 200);
+
                     if (this.blinkTimer == null) {
                         this.blinkTimer = setInterval(() => {
                             this.filterStyle = this.filterStyle === '' ? FILTER_STYLE : '';
                         }, 500);
                     }
                 }
-
-                setTimeout(() => {
-                    const imageList = this.mapImageDataList.filter(mapImageData => {
-                        return mapImageData.id === this.selectedExpressWay.id;
-                    })[0]['img'];
-                    const count = imageList.filter(image => {
-                        //return image.id === this.selectedChunk.chunk_id;
-                        return image['@data-name'] === this.selectedChunk.name;
-                    }).length;
-                    if (count === 0) alert('ไม่พบเส้นข้อมูลบน Schematic Map');
-                }, 200);
             },
             /*handleClickCardButton: function (chunk) {
                 const pointIdListText = chunk.points.reduce((total, point, index) => {

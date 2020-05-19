@@ -1,4 +1,6 @@
 export function getMapImageDataList() {
+    const IMAGE_BASE_URL = 'https://alg.exat.co.th/media/dashboard/schematic_map/';
+
     mapImageDataList.forEach(road => {
         road.id = parseInt(road['@data-road-id']);
         road['img'].forEach(image => {
@@ -12,9 +14,9 @@ export function getMapImageDataList() {
                 const name = fileName.substring(0, lastDotPosition);
                 const ext = fileName.substring(lastDotPosition + 1);
                 //const fileNamePartList = fileName.split('.');
-                image.srcGreen = 'green/' + ((fileName.includes('inout') || fileName.includes('line')) ? fileName : `${name}.${ext}`);
-                image.srcOrange = 'orange/' + ((fileName.includes('inout') || fileName.includes('line')) ? fileName : `${name}o.${ext}`);
-                image.srcRed = 'red/' + ((fileName.includes('inout') || fileName.includes('line')) ? fileName : `${name}r.${ext}`);
+                image.srcGreen = IMAGE_BASE_URL + 'green/' + ((fileName.includes('inout') || fileName.includes('line')) ? fileName : `${name}.${ext}`);
+                image.srcOrange = IMAGE_BASE_URL + 'orange/' + ((fileName.includes('inout') || fileName.includes('line')) ? fileName : `${name}o.${ext}`);
+                image.srcRed = IMAGE_BASE_URL + 'red/' + ((fileName.includes('inout') || fileName.includes('line')) ? fileName : `${name}r.${ext}`);
             } else {
                 alert('ERROR: Invalid image src path name');
             }
