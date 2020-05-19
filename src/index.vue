@@ -4,9 +4,21 @@
       <div style="flex: 1; overflow: auto; width: 620px;">
         <v-alert
           v-if="alertMessage != null"
-          type="info"
+          border="top"
+          colored-border
+          type="success"
+          elevation="2"
           dismissible
         ><span style="white-space: pre;">{{alertMessage}}</span></v-alert>
+        <v-alert
+          v-if="selectedExpressWay != null"
+          border="top"
+          colored-border
+          type="info"
+          elevation="2"
+          dismissible
+        ><span>คลิกที่ card เพื่อดูเส้นของ chunk นั้นบน Schematic Map</span>
+        </v-alert>
         <v-layout column align-content-start class="pa-1">
           <div class="mt-1">
             <h3 style="color: #333">
