@@ -40,6 +40,7 @@
             <v-select
               v-model="selectedExpressWay"
               :items="expressWayList"
+              @change="handleSelectExpressWay"
               label="เลือกสายทาง"
               single-line
             />
@@ -146,6 +147,7 @@
           :key="road.id"
           :data-road-id="road.id">
           <img
+            :ref="`r${road.id}-img${image.id}`"
             class="chunk"
             v-for="image in road.img"
             :key="image.id"
@@ -158,6 +160,16 @@
             :style="getImageStyle(image)"
           />
         </div>
+        <img
+          ref="arrow"
+          v-if="selectedDomImage != null"
+          class="arrow"
+          :src="require('./assets/ic_arrow-w60.png')"
+          :style="arrowPosition"
+        />
+        <!--<canvas id="myCanvas" class="overlay">
+          Your browser does not support the HTML5 canvas tag.
+        </canvas>-->
       </div>
     </div>
   </v-app>
@@ -180,6 +192,7 @@
         },
         data: () => {
             return {
+                //ctx: null,
                 alertMessage: null,
                 expressWayList: getExpressWayList(),
                 mapImageDataList: getMapImageDataList(),
@@ -187,6 +200,7 @@
                 selectedChunk: null,
                 filterStyle: '',
                 blinkTimer: null,
+                selectedDomImage: null,
                 //mapPosition: {top: -70, left: 630},
             };
         },
@@ -201,6 +215,11 @@
             },
             mapScale: function () {
                 return (this.windowHeight + (420 * (this.windowHeight / 2160))) / 2160;
+            },
+            arrowPosition: function () {
+                const top = this.selectedDomImage.offsetTop + (this.selectedDomImage.offsetHeight - 60) / 2;
+                const left = this.selectedDomImage.offsetLeft - 60 - 5;
+                return `top: ${top}px; left: ${left}px`;
             },
             /*listWidth: function () {
                 return (this.windowWidth > 1280) ? 620 : 620 - (1366 - 1280);
@@ -251,6 +270,10 @@
         destroyed: function () {
             window.removeEventListener('resize', this.handleChangeWindowSize);
         },
+        mounted: function () {
+            /*const canvas = document.getElementById("myCanvas");
+            this.ctx = canvas.getContext("2d");*/
+        },
         methods: {
             handleChangeWindowSize: function () {
 
@@ -297,6 +320,7 @@
                     this.selectedChunk = null;
                     clearInterval(this.blinkTimer);
                     this.blinkTimer = null;
+                    this.selectedDomImage = null;
                 } else {
                     this.selectedChunk = chunk;
 
@@ -304,11 +328,37 @@
                         const imageList = this.mapImageDataList.filter(mapImageData => {
                             return mapImageData.id === this.selectedExpressWay.id;
                         })[0]['img'];
-                        const count = imageList.filter(image => {
+                        const filteredImageList = imageList.filter(image => {
                             //return image.id === this.selectedChunk.chunk_id;
                             return image['@data-name'] === this.selectedChunk.name;
-                        }).length;
-                        if (count === 0) alert('ไม่พบเส้นข้อมูลบน Schematic Map');
+                        });
+
+                        if (filteredImageList.length === 0) {
+                            this.selectedDomImage = null;
+                            setTimeout(() => {
+                                alert('ไม่พบเส้นข้อมูลบน Schematic Map');
+                            }, 100);
+                        } else {
+                            /*const image = filteredImageList[0];
+                            const stylePartList = image['@style'].split(';');
+                            const top = parseInt(stylePartList.filter(stylePart => {
+                               return stylePart.trim().substring(0, 3).toLowerCase() === 'top';
+                            })[0].split(':')[1].trim().replace(/\D/g,''));
+                            const left = parseInt(stylePartList.filter(stylePart => {
+                               return stylePart.trim().substring(0, 4).toLowerCase() === 'left';
+                            })[0].split(':')[1].trim().replace(/\D/g,''));*/
+                            //alert('top: ' + top + ', left: ' + left);
+
+                            /*ctx.beginPath();
+                            ctx.arc(left, top, 100, 0, 2 * Math.PI);
+                            ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+                            ctx.fill();*/
+
+                            const image = filteredImageList[0];
+                            this.selectedDomImage = this.$refs[`r${this.selectedExpressWay.id}-img${image.id}`][0];
+                            console.log(this.selectedDomImage);
+                            console.log(`Width: ${this.selectedDomImage.offsetWidth}, Height: ${this.selectedDomImage.offsetHeight}, Left: ${this.selectedDomImage.offsetLeft}, Top: ${this.selectedDomImage.offsetTop}`);
+                        }
                     }, 200);
 
                     if (this.blinkTimer == null) {
@@ -325,6 +375,11 @@
                 alert(`Point ID: ${pointIdListText}`);
             },*/
             handleSelectExpressWay: function () {
+                this.selectedChunk = null;
+                this.selectedDomImage = null;
+                clearInterval(this.blinkTimer);
+                this.blinkTimer = null;
+
                 //alert(this.selectedExpressWay.id);
                 /*const AUTH_TOKEN = '8a4e96ed4c9281af4d0c2189c6a72551fe940b43';
                 axios.get(
@@ -349,8 +404,8 @@
 <style scoped>
   .overlay {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
   }
@@ -360,5 +415,12 @@
     top: 0;
     left: 0;
     z-index: 10000;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 1000px;
+    left: 200px;
+    z-index: 10010;
   }
 </style>
