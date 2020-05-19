@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <div style="display: flex; flex-direction: column; padding: 5px; border: 0px solid red;">
-      <div style="flex: 1; overflow: auto; width: 620px;">
+    <div style="flex: 1; display: flex; flex-direction: row; align-items: stretch; padding: 5px; border: 0px solid red;">
+      <div style="overflow: auto; width: 620px; border: 0px solid pink">
         <v-alert
           v-if="alertMessage != null"
           border="top"
@@ -130,7 +130,7 @@
       </div>
     </div>
 
-    <div style="position: fixed; top: -70px; left: 630px; transform: scale(0.37); transform-origin: left top;">
+    <div :style="`position: fixed; top: ${-200 * mapScale}px; left: 630px; transform: scale(${mapScale}); transform-origin: left top;`">
       <img src="https://alg.exat.co.th/static/dashboard/schematic_map/background_dev.png" alt="">
       <div id="mapData" class="overlay">
         <div
@@ -156,10 +156,13 @@
 </template>
 
 <script>
+    import Vue from 'vue';
+    import VueWindowSize from 'vue-window-size';
     import {getExpressWayList} from './data/maps';
     import {getMapImageDataList} from './data/alg_schematic_map';
     //import Layout from './layouts/default';
 
+    Vue.use(VueWindowSize);
     const FILTER_STYLE = ' filter: invert(100%);';
 
     export default {
@@ -176,6 +179,7 @@
                 selectedChunk: null,
                 filterStyle: '',
                 blinkTimer: null,
+                //mapPosition: {top: -70, left: 630},
             };
         },
         computed: {
@@ -187,8 +191,13 @@
                 });
                 //return this.mapImageDataList;
             },
+            mapScale: function () {
+                return (this.windowHeight + (420 * (this.windowHeight / 2160))) / 2160;
+            }
         },
         created: function () {
+            window.addEventListener('resize', this.handleChangeWindowSize);
+
             let imageChunkCount = 0;
             let dataChunkCount;
             this.mapImageDataList.forEach(road => {
@@ -228,7 +237,13 @@
             }
             this.alertMessage = `Total image chunks: ${imageChunkCount}\nTotal API data chunks: ${dataChunkCount}\n${msg}`;
         },
+        destroyed: function () {
+            window.removeEventListener('resize', this.handleChangeWindowSize);
+        },
         methods: {
+            handleChangeWindowSize: function () {
+
+            },
             getCardColor: function (chunk) {
                 if (this.selectedChunk === chunk) return "";
 
