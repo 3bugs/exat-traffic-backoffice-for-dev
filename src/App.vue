@@ -38,6 +38,13 @@
     </v-app-bar>
 
     <v-content>
+      <div @click="handleClickTest">Test</div>
+      <v-btn
+        href="/"
+        text
+      >
+        <span>Test2</span>
+      </v-btn>
       <HelloWorld/>
     </v-content>
   </v-app>
@@ -56,5 +63,10 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    handleClickTest: function () {
+      this.$root.currentRoute = '/';
+    }
+  },
 };
 </script>

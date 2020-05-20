@@ -1,10 +1,34 @@
-import Vue from 'vue'
-import App from './index.vue'
+import devTools from '@vue/devtools';
+import Vue from 'vue';
 import vuetify from './plugins/vuetify';
+import SchematicMaps from "./SchematicMaps";
+import App from "./App";
 
-Vue.config.productionTip = false
+const NotFound = {template: '<p>Page not found</p>'};
+//const About = {template: '<p>About page</p>'};
+
+Vue.config.productionTip = false;
+
+if (process.env.NODE_ENV === 'development') {
+  devTools.connect('localhost', 8098);
+}
+
+const routes = {
+  '/': SchematicMaps,
+  '/about': App,
+}
 
 new Vue({
   vuetify,
-  render: h => h(App)
-}).$mount('#app')
+  data: {
+    currentRoute: window.location.pathname
+  },
+  computed: {
+    viewComponent() {
+      return routes[this.currentRoute] || NotFound
+    }
+  },
+  render(h) {
+    return h(this.viewComponent)
+  },
+}).$mount('#app');
