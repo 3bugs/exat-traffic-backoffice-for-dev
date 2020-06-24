@@ -21,8 +21,14 @@
               single-line
             />
           </v-flex>
-          <div v-if="selectedExpressWay != null">
-
+          <div v-if="gateInList && gateInList.length > 0">
+            <v-card
+              class="mb-3"
+              v-for="gateIn in gateInList"
+              :key="gateIn.gate_in_id"
+              :hover="true">
+              <v-card-title>{{gateIn.gate_in_name}}</v-card-title>
+            </v-card>
           </div>
         </v-layout>
       </div>
@@ -53,6 +59,7 @@
   import VueWindowSize from 'vue-window-size';
   //import Layout from './layouts/default';
 
+  const API_BASED_URL = 'http://163.47.9.26/api';
   const axios = require('axios').default;
 
   Vue.use(VueWindowSize);
@@ -103,6 +110,7 @@
         alertMessage: null,
         expressWayList: EXPRESS_WAY_LIST,
         selectedExpressWay: null,
+        gateInList: [],
         selectedChunk: null,
         filterStyle: '',
         blinkTimer: null,
@@ -128,12 +136,13 @@
       },
       handleSelectExpressWay: function () {
         axios.get(
-          `http://163.47.9.26/api/gate_in/${this.selectedExpressWay.id}`,
+          `${API_BASED_URL}/gate_in/${this.selectedExpressWay.id}`,
           {
             //headers: {Authorization: `Token ${AUTH_TOKEN}`}
           })
           .then(response => {
-            alert(response.data);
+            console.log(response.data);
+            this.gateInList = response.data.data_list;
           })
           .catch((error) => {
             console.log('Error: ' + error);
