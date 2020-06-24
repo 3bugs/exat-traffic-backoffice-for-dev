@@ -28,6 +28,7 @@
               :key="gateIn.gate_in_id"
               :hover="true">
               <v-card-title>{{gateIn.gate_in_name}}</v-card-title>
+              <v-card-subtitle>{{gateIn.cost_tolls_count}} เส้นทาง</v-card-subtitle>
             </v-card>
           </div>
         </v-layout>
