@@ -41,14 +41,14 @@
         map-type-id="roadmap"
         style="width: 100%; height: 100%"
       >
-        <!--<GmapMarker
-          :key="index"
-          v-for="(m, index) in markers"
-          :position="m.position"
+        <GmapMarker
+          v-for="gateIn in gateInList"
+          :key="gateIn.gate_in_id"
+          :position="{lat: gateIn.lat, lng: gateIn.lng}"
           :clickable="true"
-          :draggable="true"
+          :draggable="false"
           @click="center=m.position"
-        />-->
+        />
       </GmapMap>
     </div>
   </v-app>
