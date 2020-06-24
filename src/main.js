@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const routes = {
   '/': SchematicMaps,
-  '/about': App,
+  '/promlert/about': App,
 }
 
 new Vue({
@@ -25,6 +25,7 @@ new Vue({
   },
   computed: {
     viewComponent() {
+      alert(this.currentRoute);
       return routes[this.currentRoute] || NotFound
     }
   },
