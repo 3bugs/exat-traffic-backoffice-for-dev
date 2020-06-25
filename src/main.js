@@ -62,7 +62,7 @@ new Vue({
   computed: {
     viewComponent() {
       console.log(this.currentRoute);
-      const path = this.currentRoute.replace('/schematic_old', '');
+      const path = this.currentRoute.replace('/promlert', '');
       return routes[path] || NotFound
     }
   },
