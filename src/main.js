@@ -19,8 +19,8 @@ if (process.env.NODE_ENV === 'development') {
 const routes = {
   '': CostTolls,
   '/': CostTolls,
-  '/schematic_maps': SchematicMaps,
-  '/schematic_maps/': SchematicMaps,
+  '/schematic_old': SchematicMaps,
+  '/schematic_old/': SchematicMaps,
   '/cost_tolls': CostTolls,
   '/cost_tolls/': CostTolls,
   '/about': App,

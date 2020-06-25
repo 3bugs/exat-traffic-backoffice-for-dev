@@ -1,5 +1,5 @@
 module.exports = {
-  "publicPath": '/tools/',
+  "publicPath": '/promlert/',
   "transpileDependencies": [
     "vuetify"
   ],
