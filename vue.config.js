@@ -1,5 +1,5 @@
 module.exports = {
-  "publicPath": '/schematic_old/',
+  "publicPath": '/tools/',
   "transpileDependencies": [
     "vuetify"
   ],

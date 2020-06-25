@@ -10,14 +10,17 @@ const NotFound = {template: '<p>Page not found</p>'};
 //const About = {template: '<p>About page</p>'};
 
 Vue.config.productionTip = false;
+//Vue.loadScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=geometry');
 
 if (process.env.NODE_ENV === 'development') {
   devTools.connect('localhost', 8098);
 }
 
 const routes = {
-  '': SchematicMaps,
-  '/': SchematicMaps,
+  '': CostTolls,
+  '/': CostTolls,
+  '/schematic_maps': SchematicMaps,
+  '/schematic_maps/': SchematicMaps,
   '/cost_tolls': CostTolls,
   '/cost_tolls/': CostTolls,
   '/about': App,
