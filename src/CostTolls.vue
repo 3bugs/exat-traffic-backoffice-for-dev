@@ -1,9 +1,12 @@
 <template>
   <v-app>
-    <div style="flex: 1; display: flex; flex-direction: row; align-items: stretch; padding: 5px; border: 0px solid red;">
-      <div :style="`overflow: auto; width: 300px; border: 0px solid pink`">
+    <div
+      class="split left"
+      :style="`border: 0px solid red; width: ${this.LEFT_PANE_WIDTH}px;`"
+    >
+      <div :style="`overflow: auto; width: 100%; border: 0px solid pink`">
         <v-layout column align-content-start class="pa-1">
-          <div class="mt-1">
+          <div class="ma-2">
             <h3 style="color: #333">
               {{selectedExpressWay == null ? 'เลือกสายทาง' : selectedExpressWay.name}}
               <br/>
@@ -13,7 +16,7 @@
             </h3>
             <!--<div>{{selectedExpressWay.chunk}}</div>-->
           </div>
-          <v-flex class="mb-2 mt-1">
+          <v-flex class="ml-2 mr-2 mb-1">
             <v-select
               v-model="selectedExpressWay"
               :items="expressWayList"
@@ -70,7 +73,10 @@
       </div>
     </div>
 
-    <div :style="`position: fixed; border: 1px solid #ccc; top: 0px; left: 310px; width: ${this.windowWidth - 310}px; height: 100%`">
+    <div
+      class="split right"
+      :style="`border: 0px solid blue; left: ${this.LEFT_PANE_WIDTH}px; width: ${this.windowWidth - this.LEFT_PANE_WIDTH}px;`"
+    >
       <gmap-map
         ref="mapRef"
         :center="{lat: 13.7850, lng: 100.6518}"
@@ -189,7 +195,9 @@
   import VueWindowSize from 'vue-window-size';
   //import Layout from './layouts/default';
   import {gmapApi} from 'vue2-google-maps';
+  import './styles/main.css';
 
+  const LEFT_PANE_WIDTH = 325;
   const API_BASED_URL = 'http://163.47.9.26/api';
   const axios = require('axios').default;
 
@@ -237,6 +245,7 @@
     },
     data: () => {
       return {
+        LEFT_PANE_WIDTH,
         alertMessage: null,
         expressWayList: EXPRESS_WAY_LIST,
         selectedExpressWay: null,
@@ -519,26 +528,20 @@
 </script>
 
 <style scoped>
-  .overlay {
-    position: absolute;
-    width: 100%;
+  .split {
+    position: fixed;
     height: 100%;
+    z-index: 1;
     top: 0;
+    overflow-x: hidden;
+  }
+
+  .left {
     left: 0;
   }
 
-  .chunk {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10000;
-  }
-
-  .arrow {
-    position: absolute;
-    top: 1000px;
-    left: 200px;
-    z-index: 10010;
+  .right {
+    right: 0;
   }
 
   .vue-map-container .gm-ui-hover-effect {

@@ -1,7 +1,10 @@
 <template>
   <v-app>
-    <div style="flex: 1; display: flex; flex-direction: row; align-items: stretch; padding: 5px; border: 0px solid red;">
-      <div :style="`overflow: auto; width: 620px; border: 0px solid pink`">
+    <div
+      class="split left"
+      :style="`border: 0px solid red; width: ${this.LEFT_PANE_WIDTH}px;`"
+    >
+      <div :style="`overflow: auto; width: 100%; border: 0px solid pink`">
         <v-alert
           v-if="windowWidth < 1366"
           border="top"
@@ -28,7 +31,7 @@
         ><span>คลิกที่ card เพื่อดูเส้นของ chunk นั้นบน Schematic Map</span>
         </v-alert>
         <v-layout column align-content-start class="pa-1">
-          <div class="mt-1">
+          <div class="ml-2 mr-2 mt-2">
             <h3 style="color: #333">
               {{selectedExpressWay == null ? 'เลือกสายทาง' : selectedExpressWay.name}}
               <span
@@ -36,7 +39,7 @@
             </h3>
             <!--<div>{{selectedExpressWay.chunk}}</div>-->
           </div>
-          <v-flex class="mb-2 mt-1">
+          <v-flex class="ml-2 mr-2 mb-2 mt-1">
             <v-select
               v-model="selectedExpressWay"
               :items="expressWayList"
@@ -139,7 +142,10 @@
       </div>
     </div>
 
-    <div :style="`position: fixed; top: ${-200 * mapScale}px; left: 630px; transform: scale(${mapScale}); transform-origin: left top;`">
+    <div
+      class="split right"
+      :style="`top: ${-200 * mapScale}px; left: ${this.LEFT_PANE_WIDTH}px; transform: scale(${mapScale}); transform-origin: left top;`"
+    >
       <img src="https://alg.exat.co.th/static/dashboard/schematic_map/background_dev.png" alt="">
       <div id="mapData" class="overlay">
         <div
@@ -183,6 +189,7 @@
   //import Layout from './layouts/default';
 
   Vue.use(VueWindowSize);
+  const LEFT_PANE_WIDTH = 630;
   const FILTER_STYLE = ' filter: invert(100%);';
 
   export default {
@@ -193,6 +200,7 @@
     data: () => {
       return {
         //ctx: null,
+        LEFT_PANE_WIDTH,
         alertMessage: null,
         expressWayList: getExpressWayList(),
         mapImageDataList: getMapImageDataList(),
@@ -402,6 +410,22 @@
 </script>
 
 <style scoped>
+  .split {
+    position: fixed;
+    z-index: 1;
+    overflow-x: hidden;
+  }
+
+  .left {
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 5px;
+  }
+
+  .right {
+  }
+
   .overlay {
     position: absolute;
     width: 100%;
