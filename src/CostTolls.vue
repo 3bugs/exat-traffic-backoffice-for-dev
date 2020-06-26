@@ -152,6 +152,13 @@
             <li>รถ 6-10 ล้อ : {{this.selectedCostToll.cost_4to10}} บาท</li>
             <li>รถมากกว่า 10 ล้อ : {{this.selectedCostToll.cost_over10}} บาท</li>
           </ul>
+
+          <div
+            class="mt-1"
+            v-if="this.selectedCostToll.distance != null"
+          >
+            ระยะทาง {{this.selectedCostToll.distance}}, ใช้เวลาเดินทาง {{this.selectedCostToll.duration}}
+          </div>
         </div>
       </v-snackbar>
     </div>
@@ -394,15 +401,19 @@
         clickedCostToll.selected = true;
         //this.$refs.costTollMarkerRef[clickedCostToll.index].$markerObject.setAnimation(google.maps.Animation.BOUNCE);
 
+        clickedCostToll.distance = null;
+        clickedCostToll.duration = null;
+
         const {lat, lng} = origin;
         this.getDirections(
+          clickedCostToll,
           {lat, lng},
           {lat: clickedCostToll.lat, lng: clickedCostToll.lng}
         );
       },
 
       //https://developers.google.com/maps/documentation/javascript/directions
-      getDirections: function (origin, destination) {
+      getDirections: function (costToll, origin, destination) {
         const directionsService = new this.google.maps.DirectionsService();
         //const directionsRenderer = new this.google.maps.DirectionsRenderer();
 
@@ -418,6 +429,8 @@
             console.log(result);
 
             self.path = result.routes[0].overview_path;
+            costToll.distance = result.routes[0].legs[0].distance.text;
+            costToll.duration = result.routes[0].legs[0].duration.text;
 
             /*const {south, east, north, west} = result.routes[0].bounds;
 
