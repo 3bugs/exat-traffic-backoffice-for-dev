@@ -168,21 +168,21 @@
               <td align="right">{{this.hoveredCostToll.cost_4to10}}</td>
             </tr>
             <tr>
-              <td align="left">มากกว่า 10 ล้อ</td>
+              <td align="left">เกิน 10 ล้อ</td>
               <td align="right">{{this.hoveredCostToll.cost_over10}}</td>
             </tr>
           </table>-->
-          <ul class="mt-1">
+          <ul class="mt-2">
             <li>รถ 4 ล้อ : {{this.selectedCostToll.cost_less4}} บาท</li>
             <li>รถ 6-10 ล้อ : {{this.selectedCostToll.cost_4to10}} บาท</li>
-            <li>รถมากกว่า 10 ล้อ : {{this.selectedCostToll.cost_over10}} บาท</li>
+            <li>รถเกิน 10 ล้อ : {{this.selectedCostToll.cost_over10}} บาท</li>
           </ul>
 
           <div
-            class="mt-1"
+            class="mt-2"
             v-if="this.selectedCostToll.distance != null"
           >
-            ระยะทาง {{this.selectedCostToll.distance}}, ใช้เวลาเดินทาง {{this.selectedCostToll.duration}}
+            ระยะทาง {{this.selectedCostToll.distance.replace('km', 'กม.')}}, ใช้เวลาเดินทาง {{this.selectedCostToll.duration.replace('hour', 'ชม.').replace('mins', 'นาที')}}
           </div>
         </div>
       </v-snackbar>
