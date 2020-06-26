@@ -316,7 +316,9 @@
               clickedGateIn.costTollList = costTollList;
 
               setTimeout(() => {
-                this.scrollCard();
+                if (scroll) {
+                  this.scrollCard();
+                }
               }, 400)
             })
             .catch((error) => {
@@ -332,8 +334,9 @@
 
         /* ถ้าคลิก card จะ pan map และ scroll card,
            ถ้าคลิก marker จะ scroll card แต่ไม่ pan map */
-
-        this.scrollCard()
+        if (scroll) {
+          this.scrollCard();
+        }
 
         // pan map
         if (!scroll) {
