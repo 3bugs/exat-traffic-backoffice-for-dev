@@ -113,7 +113,6 @@
           :clickable="true"
           :draggable="false"
           @click="() => handleClickCostToll(costToll)"
-          @mouseover="() => {handleHoverCostTollMarker(costToll)}"
         />
         <gmap-polyline
           ref="polyline"
@@ -123,13 +122,12 @@
         />
       </gmap-map>
       <v-snackbar
-        v-if="hoveredCostToll && selectedGateIn"
-        v-model="showCostTollInfo"
-        :timeout="10000"
+        :value="selectedCostToll != null"
+        :timeout="0"
       >
-        <div>
+        <div v-if="selectedCostToll != null">
           <div>
-            {{this.selectedGateIn.gate_in_name}} ➜ {{this.hoveredCostToll.name}}
+            {{this.selectedGateIn.gate_in_name}} ➜ {{this.selectedCostToll.name}}
           </div>
           <!--<table style="width: 240px">
             <tr>
@@ -150,9 +148,9 @@
             </tr>
           </table>-->
           <ul class="mt-1">
-            <li>รถ 4 ล้อ : {{this.hoveredCostToll.cost_less4}} บาท</li>
-            <li>รถ 6-10 ล้อ : {{this.hoveredCostToll.cost_4to10}} บาท</li>
-            <li>รถมากกว่า 10 ล้อ : {{this.hoveredCostToll.cost_over10}} บาท</li>
+            <li>รถ 4 ล้อ : {{this.selectedCostToll.cost_less4}} บาท</li>
+            <li>รถ 6-10 ล้อ : {{this.selectedCostToll.cost_4to10}} บาท</li>
+            <li>รถมากกว่า 10 ล้อ : {{this.selectedCostToll.cost_over10}} บาท</li>
           </ul>
         </div>
       </v-snackbar>
@@ -220,8 +218,8 @@
         isLoadingGateIn: false,
         isLoadingCostToll: false,
         path: null,
-        showCostTollInfo: false,
-        hoveredCostToll: null,
+        //showCostTollInfo: false,
+        //hoveredCostToll: null,
       };
     },
     computed: {
@@ -229,6 +227,24 @@
       selectedGateIn: function () {
         const filteredGateIn = this.gateInList.filter(gateIn => gateIn.selected);
         return filteredGateIn.length === 0 ? null : filteredGateIn[0];
+      },
+      selectedCostToll: function () {
+        const selectedGateIn = this.selectedGateIn;
+        if (selectedGateIn != null) {
+          if (selectedGateIn.costTollList != null) {
+            const filteredCostToll = selectedGateIn.costTollList.filter(costToll => costToll.selected);
+            if (filteredCostToll.length === 0) {
+              console.log('Selected Cost Toll: NULL');
+            } else {
+              console.log('Selected Cost Toll: OK');
+            }
+            return filteredCostToll.length === 0 ? null : filteredCostToll[0];
+          }
+          console.log('Selected Cost Toll: NULL');
+          return null
+        }
+        console.log('Selected Cost Toll: NULL');
+        return null;
       },
       costTollList: function () {
         let costTollList = [];
@@ -450,8 +466,9 @@
         return decodedLevels;
       },
       handleHoverCostTollMarker: function (costToll) {
-        this.hoveredCostToll = costToll;
-        this.showCostTollInfo = true;
+        console.log(costToll);
+        //this.hoveredCostToll = costToll;
+        //this.showCostTollInfo = true;
       },
     }
   }
