@@ -88,6 +88,8 @@
             :clickable="true"
             :draggable="false"
             @click="() => handleClickGateIn(selectedGateIn, true)"
+            @mouseover="() => {handleHoverGateInMarker(selectedGateIn)}"
+            @mouseout="() => infoWindow.open = false"
           />
         </template>
         <template v-if="selectedGateIn == null">
@@ -101,6 +103,8 @@
             :clickable="true"
             :draggable="false"
             @click="() => handleClickGateIn(gateIn, true)"
+            @mouseover="() => {handleHoverGateInMarker(gateIn)}"
+            @mouseout="() => infoWindow.open = false"
           />
         </template>
         <gmap-marker
@@ -113,7 +117,22 @@
           :clickable="true"
           :draggable="false"
           @click="() => handleClickCostToll(costToll)"
+          @mouseover="() => {handleHoverCostTollMarker(costToll)}"
+          @mouseout="() => infoWindow.open = false"
         />
+        <gmap-info-window
+          :options="{
+            maxWidth: 300,
+            pixelOffset: {
+              width: 0,
+              height: -35,
+            },
+          }"
+          :position="infoWindow.position"
+          :opened="infoWindow.open"
+          @closeclick="() => infoWindow.open = false">
+          <div v-html="infoWindow.template"/>
+        </gmap-info-window>
         <gmap-polyline
           ref="polyline"
           v-if="path"
@@ -225,6 +244,11 @@
         isLoadingGateIn: false,
         isLoadingCostToll: false,
         path: null,
+        infoWindow: {
+          position: null,
+          open: false,
+          template: 'ด่านเก็บเงิน',
+        },
         //showCostTollInfo: false,
         //hoveredCostToll: null,
       };
@@ -478,10 +502,17 @@
         }
         return decodedLevels;
       },
+      handleHoverGateInMarker: function (gateIn) {
+        const {lat, lng} = gateIn;
+        this.infoWindow.position = {lat, lng};
+        this.infoWindow.open = true;
+        this.infoWindow.template = `${gateIn.gate_in_name}<br/>lat: ${gateIn.lat}, lng: ${gateIn.lng}`;
+      },
       handleHoverCostTollMarker: function (costToll) {
-        console.log(costToll);
-        //this.hoveredCostToll = costToll;
-        //this.showCostTollInfo = true;
+        const {lat, lng} = costToll;
+        this.infoWindow.position = {lat, lng};
+        this.infoWindow.open = true;
+        this.infoWindow.template = `${costToll.name}<br/>lat: ${costToll.lat}, lng: ${costToll.lng}`;
       },
     }
   }
@@ -508,5 +539,9 @@
     top: 1000px;
     left: 200px;
     z-index: 10010;
+  }
+
+  .vue-map-container .gm-ui-hover-effect {
+    display: none!important;
   }
 </style>
