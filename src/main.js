@@ -1,8 +1,8 @@
 import devTools from '@vue/devtools';
 import Vue from 'vue';
 import vuetify from './plugins/vuetify';
-import SchematicMaps from "./SchematicMaps";
-import CostTolls from "./CostTolls";
+import SchematicMaps from "./screens/SchematicMaps";
+import CostTolls from "./screens/CostTolls";
 import App from "./App";
 import * as VueGoogleMaps from 'vue2-google-maps';
 

@@ -1,8 +1,8 @@
 <template>
-  <v-app>
+  <layout :menu-id="1">
     <div
       class="split left"
-      :style="`border: 0px solid red; width: ${this.LEFT_PANE_WIDTH}px;`"
+      :style="`border: 0px solid red; width: ${this.LEFT_PANE_WIDTH}px; top: ${this.HEADER_HEIGHT}px; height: ${this.windowHeight - this.HEADER_HEIGHT}px`"
     >
       <div :style="`overflow: auto; width: 100%; border: 0px solid pink`">
         <v-layout column align-content-start class="pa-1">
@@ -75,7 +75,7 @@
 
     <div
       class="split right"
-      :style="`border: 0px solid blue; left: ${this.LEFT_PANE_WIDTH}px; width: ${this.windowWidth - this.LEFT_PANE_WIDTH}px;`"
+      :style="`border: 0px solid blue; left: ${this.LEFT_PANE_WIDTH}px; width: ${this.windowWidth - this.LEFT_PANE_WIDTH}px; top: ${this.HEADER_HEIGHT}px; height: ${this.windowHeight - this.HEADER_HEIGHT}px`"
     >
       <gmap-map
         ref="mapRef"
@@ -187,16 +187,17 @@
         </div>
       </v-snackbar>
     </div>
-  </v-app>
+  </layout>
 </template>
 
 <script>
   import Vue from 'vue';
   import VueWindowSize from 'vue-window-size';
-  //import Layout from './layouts/default';
+  import Layout from '../layouts/default';
   import {gmapApi} from 'vue2-google-maps';
-  import './styles/main.css';
+  import '../styles/main.css';
 
+  const HEADER_HEIGHT = 65;
   const LEFT_PANE_WIDTH = 325;
   const API_BASED_URL = 'http://163.47.9.26/api';
   const axios = require('axios').default;
@@ -241,10 +242,11 @@
   export default {
     name: "cost_tolls",
     components: {
-      //Layout,
+      Layout,
     },
     data: () => {
       return {
+        HEADER_HEIGHT,
         LEFT_PANE_WIDTH,
         alertMessage: null,
         expressWayList: EXPRESS_WAY_LIST,

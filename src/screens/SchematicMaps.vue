@@ -1,8 +1,8 @@
 <template>
-  <v-app>
+  <layout :menu-id="0">
     <div
       class="split left"
-      :style="`border: 0px solid red; width: ${this.LEFT_PANE_WIDTH}px;`"
+      :style="`border: 0px solid red; width: ${this.LEFT_PANE_WIDTH}px; top: ${this.HEADER_HEIGHT}px; height: ${this.windowHeight - this.HEADER_HEIGHT}px`"
     >
       <div :style="`overflow: auto; width: 100%; border: 0px solid pink`">
         <v-alert
@@ -77,7 +77,7 @@
                   size="40"
                 >
                   <v-img
-                    :src="getCardImageSource(chunk) || require('./assets/ic_error256.png')"
+                    :src="getCardImageSource(chunk) || require('../assets/ic_error256.png')"
                     :contain="true"
                     width="40px"
                     height="40px"
@@ -144,7 +144,7 @@
 
     <div
       class="split right"
-      :style="`top: ${-200 * mapScale}px; left: ${this.LEFT_PANE_WIDTH}px; transform: scale(${mapScale}); transform-origin: left top;`"
+      :style="`top: ${(-200 * mapScale) + this.HEADER_HEIGHT}px; left: ${this.LEFT_PANE_WIDTH}px; transform: scale(${mapScale}); transform-origin: left top;`"
     >
       <img src="https://alg.exat.co.th/static/dashboard/schematic_map/background_dev.png" alt="">
       <div id="mapData" class="overlay">
@@ -170,7 +170,7 @@
           ref="arrow"
           v-if="selectedDomImage != null"
           class="arrow"
-          :src="require('./assets/ic_arrow-w60.png')"
+          :src="require('../assets/ic_arrow-w60.png')"
           :style="arrowPosition"
         />
         <!--<canvas id="myCanvas" class="overlay">
@@ -178,28 +178,30 @@
         </canvas>-->
       </div>
     </div>
-  </v-app>
+  </layout>
 </template>
 
 <script>
   import Vue from 'vue';
   import VueWindowSize from 'vue-window-size';
-  import {getExpressWayList} from './data/maps';
-  import {getMapImageDataList} from './data/alg_schematic_map';
-  //import Layout from './layouts/default';
+  import {getExpressWayList} from '../data/maps';
+  import {getMapImageDataList} from '../data/alg_schematic_map';
+  import Layout from '../layouts/default';
 
   Vue.use(VueWindowSize);
+  const HEADER_HEIGHT = 65;
   const LEFT_PANE_WIDTH = 630;
   const FILTER_STYLE = ' filter: invert(100%);';
 
   export default {
     name: "test",
     components: {
-      //Layout,
+      Layout,
     },
     data: () => {
       return {
         //ctx: null,
+        HEADER_HEIGHT,
         LEFT_PANE_WIDTH,
         alertMessage: null,
         expressWayList: getExpressWayList(),
@@ -222,7 +224,8 @@
         //return this.mapImageDataList;
       },
       mapScale: function () {
-        return (this.windowHeight + (420 * (this.windowHeight / 2160))) / 2160;
+        const height = this.windowHeight - HEADER_HEIGHT;
+        return (height + (420 * (height / 2160))) / 2160;
       },
       arrowPosition: function () {
         const top = this.selectedDomImage.offsetTop + (this.selectedDomImage.offsetHeight - 60) / 2;
