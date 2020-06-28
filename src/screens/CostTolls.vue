@@ -146,6 +146,49 @@
           :options="{strokeColor: '#008000', strokeOpacity: 0.4, strokeWeight: 5}"
         />
       </gmap-map>
+
+      <v-snackbar
+        :value="selectedExpressWay == null"
+        :timeout="0"
+      >
+        <div style="width: 100%; text-align: center;">เลือกสายทาง</div>
+      </v-snackbar>
+
+      <v-snackbar
+        :value="selectedExpressWay != null && selectedGateIn == null"
+        :timeout="0"
+      >
+        <div>
+          <div class="d-flex align-center justify-center">
+            <img
+              src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            />
+            <span>เลือกทางเข้า (ต้นทาง)</span>
+          </div>
+          <ul class="mt-2">
+            <li>โดยคลิกหมุดสีแดง หรือคลิก card ทางซ้าย</li>
+          </ul>
+        </div>
+      </v-snackbar>
+
+      <v-snackbar
+        :value="selectedGateIn != null && selectedCostToll == null"
+        :timeout="0"
+      >
+        <div>
+          <div class="d-flex align-center justify-center">
+            <img
+              src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            />
+            <span>เลือกทางออก (ปลายทาง)</span>
+          </div>
+          <ul class="mt-2">
+            <li>โดยคลิกหมุดสีน้ำเงิน หรือคลิกปุ่มทางซ้าย</li>
+            <li>ถ้าหากต้องการกลับไปเลือกทางเข้าอื่น ให้คลิกหมุดสีแดงซ้ำอีกที</li>
+          </ul>
+        </div>
+      </v-snackbar>
+
       <v-snackbar
         :value="selectedCostToll != null"
         :timeout="0"
@@ -547,6 +590,6 @@
   }
 
   .vue-map-container .gm-ui-hover-effect {
-    display: none!important;
+    display: none !important;
   }
 </style>
