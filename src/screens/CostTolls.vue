@@ -205,7 +205,7 @@
             <span>
               {{this.selectedGateIn.gate_in_name}}
             </span>
-            <span style="width: 30px; text-align: center">&nbsp;&nbsp;&nbsp;➜&nbsp;&nbsp;&nbsp;</span>
+            <span style="width: 30px; color: yellow; text-align: center">&nbsp;&nbsp;&nbsp;➜&nbsp;&nbsp;&nbsp;</span>
             <span>
               {{this.selectedCostToll.name}}
             </span>
