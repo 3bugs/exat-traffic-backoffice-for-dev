@@ -198,8 +198,20 @@
         :timeout="0"
       >
         <div v-if="selectedCostToll != null">
-          <div>
-            {{this.selectedGateIn.gate_in_name}} ➜ {{this.selectedCostToll.name}}
+          <div class="d-flex align-center justify-center">
+            <img
+              src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            />
+            <span>
+              {{this.selectedGateIn.gate_in_name}}
+            </span>
+            <span style="width: 30px; text-align: center">&nbsp;&nbsp;&nbsp;➜&nbsp;&nbsp;&nbsp;</span>
+            <span>
+              {{this.selectedCostToll.name}}
+            </span>
+            <img
+              src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            />
           </div>
           <!--<table style="width: 240px">
             <tr>
