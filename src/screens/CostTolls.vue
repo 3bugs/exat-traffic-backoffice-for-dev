@@ -40,6 +40,8 @@
                 :hover="true"
                 :dark="gateIn.selected"
                 @click="() => handleClickGateIn(gateIn, false)"
+                @mouseover="() => handleHoverGateInCard(gateIn)"
+                @mouseout="() => handleHoverGateInCard(null)"
               >
                 <v-card-title>ID: {{gateIn.gate_in_id}} - {{gateIn.gate_in_name}}</v-card-title>
                 <v-card-subtitle>{{gateIn.cost_tolls_count}} ปลายทาง</v-card-subtitle>
@@ -62,6 +64,8 @@
                     :key="costToll.id"
                     :color="costToll.selected ? 'primary' : ''"
                     @click="() => handleClickCostToll(costToll)"
+                    @mouseover="() => handleHoverCostTollChip(costToll)"
+                    @mouseout="() => handleHoverCostTollChip(null)"
                   >
                     {{costToll.name}}
                   </v-chip>
@@ -95,7 +99,7 @@
             :draggable="false"
             @click="() => handleClickGateIn(selectedGateIn, true)"
             @mouseover="() => {handleHoverGateInMarker(selectedGateIn)}"
-            @mouseout="() => infoWindow.open = false"
+            @mouseout="() => {handleHoverGateInMarker(null)}"
           />
         </template>
         <template v-if="selectedGateIn == null">
@@ -105,12 +109,12 @@
             :key="'gate-in-' + gateIn.gate_in_id"
             :position="{lat: gateIn.lat, lng: gateIn.lng}"
             :icon="'http://maps.google.com/mapfiles/ms/icons/red-dot.png'"
-            :opacity="0.6"
+            :opacity="gateIn.hovered ? 1.0 : 0.4"
             :clickable="true"
             :draggable="false"
             @click="() => handleClickGateIn(gateIn, true)"
             @mouseover="() => {handleHoverGateInMarker(gateIn)}"
-            @mouseout="() => infoWindow.open = false"
+            @mouseout="() => {handleHoverGateInMarker(null)}"
           />
         </template>
         <gmap-marker
@@ -119,12 +123,12 @@
           :key="'cost-toll-' + costToll.id"
           :position="{lat: costToll.lat, lng: costToll.lng}"
           :icon="'http://maps.google.com/mapfiles/ms/icons/' + (costToll.selected ? 'blue' : 'blue') + '-dot.png'"
-          :opacity="costToll.selected ? 1.0 : 0.4"
+          :opacity="(costToll.selected || costToll.hovered) ? 1.0 : 0.4"
           :clickable="true"
           :draggable="false"
           @click="() => handleClickCostToll(costToll)"
           @mouseover="() => {handleHoverCostTollMarker(costToll)}"
-          @mouseout="() => infoWindow.open = false"
+          @mouseout="() => {handleHoverCostTollMarker(null)}"
         />
         <gmap-info-window
           :options="{
@@ -373,6 +377,7 @@
             gateInList.forEach((gateIn, index) => {
               gateIn.index = index;
               gateIn.selected = false;
+              gateIn.hovered = false;
               gateIn.costTollList = null;
             });
             this.gateInList = gateInList;
@@ -413,6 +418,7 @@
               costTollList.forEach((costToll, index) => {
                 costToll.index = index;
                 costToll.selected = false;
+                costToll.hovered = false;
               });
               clickedGateIn.costTollList = costTollList;
 
@@ -453,6 +459,15 @@
         const el = this.$el.getElementsByClassName('gate-in-class')[index];
         if (el) el.scrollIntoView();
       },
+      handleHoverGateInCard: function (hoveredGateIn) {
+        this.gateInList.forEach(gateIn => {
+          gateIn.hovered = false;
+        });
+
+        if (hoveredGateIn) {
+          hoveredGateIn.hovered = true;
+        }
+      },
       handleClickCostToll: function (clickedCostToll) {
         this.path = null;
 
@@ -488,6 +503,15 @@
           {lat, lng},
           {lat: clickedCostToll.lat, lng: clickedCostToll.lng}
         );
+      },
+      handleHoverCostTollChip: function (hoveredCostToll) {
+        this.selectedGateIn.costTollList.forEach(costToll => {
+          costToll.hovered = false;
+        });
+
+        if (hoveredCostToll) {
+          hoveredCostToll.hovered = true;
+        }
       },
 
       //https://developers.google.com/maps/documentation/javascript/directions
@@ -557,16 +581,28 @@
         return decodedLevels;
       },
       handleHoverGateInMarker: function (gateIn) {
-        const {lat, lng} = gateIn;
-        this.infoWindow.position = {lat, lng};
-        this.infoWindow.open = true;
-        this.infoWindow.template = `${gateIn.gate_in_name}<br/>lat: ${gateIn.lat}, lng: ${gateIn.lng}`;
+        if (gateIn) {
+          const {lat, lng} = gateIn;
+          this.infoWindow.position = {lat, lng};
+          this.infoWindow.open = true;
+          this.infoWindow.template = `${gateIn.gate_in_name} (${gateIn.cost_tolls_count} ปลายทาง)<br/>lat: ${gateIn.lat}, lng: ${gateIn.lng}`;
+        } else {
+          this.infoWindow.open = false;
+        }
+
+        this.handleHoverGateInCard(gateIn);
       },
       handleHoverCostTollMarker: function (costToll) {
-        const {lat, lng} = costToll;
-        this.infoWindow.position = {lat, lng};
-        this.infoWindow.open = true;
-        this.infoWindow.template = `${costToll.name}<br/>lat: ${costToll.lat}, lng: ${costToll.lng}`;
+        if (costToll) {
+          const {lat, lng} = costToll;
+          this.infoWindow.position = {lat, lng};
+          this.infoWindow.open = true;
+          this.infoWindow.template = `${costToll.name}<br/>lat: ${costToll.lat}, lng: ${costToll.lng}`;
+        } else {
+          this.infoWindow.open = false;
+        }
+
+        this.handleHoverCostTollChip(costToll);
       },
     }
   }
