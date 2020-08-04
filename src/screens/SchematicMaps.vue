@@ -167,7 +167,7 @@
               :alt="`${image['@title']}\n[ ${image['@data-id']} ]\n.`"
               :style="getImageStyle(image)"
               @mouseover="(e) => handleHoverChunkImage(e, image)"
-              @mouseleave="(e) => handleMouseLeaveImage(e, image)"
+              @mouseleave="(e) => handleMouseLeaveImage(e)"
           />
         </div>
         <img
@@ -302,7 +302,7 @@ export default {
       //e.target.style = ' filter: invert(100%); ';
       e.target.style.setProperty('filter', 'invert(100%)');
     },
-    handleMouseLeaveImage: function (e, image) {
+    handleMouseLeaveImage: function (e) {
       e.target.style.setProperty('filter', '');
     },
     handleChangeWindowSize: function () {
