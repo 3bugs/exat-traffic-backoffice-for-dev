@@ -130,6 +130,18 @@
           @mouseover="() => {handleHoverCostTollMarker(costToll)}"
           @mouseout="() => {handleHoverCostTollMarker(null)}"
         />
+        <gmap-marker
+          :ref="'partTollMarkerRef'"
+          v-for="partToll in partTollList"
+          :key="'part-toll-' + partToll.id"
+          :position="{lat: partToll.lat, lng: partToll.lng}"
+          :_icon="'http://maps.google.com/mapfiles/ms/icons/' + (partToll.selected ? 'green' : 'green') + '-dot.png'"
+          :clickable="true"
+          :draggable="false"
+          @click="() => {}"
+          @mouseover="() => {handleHoverPartTollMarker(partToll)}"
+          @mouseout="() => {handleHoverPartTollMarker(null)}"
+        />
         <gmap-info-window
           :options="{
             maxWidth: 300,
@@ -357,6 +369,10 @@
           }
         });
         return costTollList;
+      },
+      partTollList: function () {
+        const selectedCostToll = this.selectedCostToll;
+        return selectedCostToll != null ? selectedCostToll.part_toll_markers : null;
       },
     },
     created: function () {
@@ -615,6 +631,16 @@
         }
 
         this.handleHoverCostTollChip(costToll);
+      },
+      handleHoverPartTollMarker: function (partToll) {
+        if (partToll) {
+          const {lat, lng} = partToll;
+          this.infoWindow.position = {lat, lng};
+          this.infoWindow.open = true;
+          this.infoWindow.template = `${partToll.name}<br/>lat: ${partToll.lat}, lng: ${partToll.lng}`;
+        } else {
+          this.infoWindow.open = false;
+        }
       },
     }
   }
