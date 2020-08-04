@@ -294,7 +294,7 @@ export default {
       const filteredChunkList = this.selectedExpressWay.chunks.filter(chunk => image['@data-name'] === chunk.name);
       let title;
       if (filteredChunkList.length > 0) {
-        title = `CHUNK: ${filteredChunkList[0].chunk_id}`;
+        title = `CHUNK: ${filteredChunkList[0].chunk_id}\n${filteredChunkList[0].name}`;
       } else {
         title = 'Error: Chunk not found!';
       }
