@@ -3,6 +3,7 @@ import Vue from 'vue';
 import vuetify from './plugins/vuetify';
 import SchematicMaps from "./screens/SchematicMaps";
 import CostTolls from "./screens/CostTolls";
+import Routes from "./screens/Routes";
 import App from "./App";
 import * as VueGoogleMaps from 'vue2-google-maps';
 
@@ -23,6 +24,8 @@ const routes = {
   '/schematic_old/': SchematicMaps,
   '/cost_tolls': CostTolls,
   '/cost_tolls/': CostTolls,
+  '/routes': Routes,
+  '/routes/': Routes,
   '/about': App,
   '/about/': App,
 }

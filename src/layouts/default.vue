@@ -74,6 +74,11 @@
       href: '/promlert/cost_tolls',
       icon: 'mdi-directions-fork',
     },
+    {
+      title: 'Routes Data',
+      href: '/promlert/routes',
+      icon: 'mdi-contain',
+    },
   ];
 
   export default {
