@@ -1,36 +1,40 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer
-      v-model="drawer"
-      app
-      absolute
-      temporary
-      dark
+        v-model="drawer"
+        app
+        absolute
+        temporary
+        dark
     >
       <div
-        class="d-flex justify-center pa-5"
+          class="d-flex justify-center pa-5"
       >
-        <v-img
+        <!--<v-img
           src="../assets/exat-w150-white.png"
           min-width="150px"
           max-width="150px"
           contain
+        />-->
+        <img
+            src="../assets/exat-w150-white.png"
+            alt="logo"
         />
       </div>
       <v-list dense>
         <v-list-item-group :value="menuId">
           <v-list-item
-            v-for="(route, index) in routes"
-            :key="index"
-            link
-            :href="route.href"
+              v-for="(route, index) in routes"
+              :key="index"
+              link
+              :href="route.href"
           >
             <v-list-item-action>
-              <v-icon>{{route.icon}}</v-icon>
+              <v-icon>{{ route.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>
-                {{route.title}}
+                {{ route.title }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -39,9 +43,9 @@
     </v-navigation-drawer>
 
     <v-app-bar
-      app
-      clipped-left
-      dark
+        app
+        clipped-left
+        dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>EXAT Traffic - Tools For Dev</v-toolbar-title>
@@ -63,38 +67,38 @@
 </template>
 
 <script>
-  const routes = [
-    {
-      title: 'Schematic Map (Old)',
-      href: '/promlert/schematic_old',
-      icon: 'mdi-map',
-    },
-    {
-      title: 'Entrance-Exit Routes',
-      href: '/promlert/cost_tolls',
-      icon: 'mdi-directions-fork',
-    },
-    {
-      title: 'Routes Data',
-      href: '/promlert/routes',
-      icon: 'mdi-contain',
-    },
-  ];
+const routes = [
+  {
+    title: 'Schematic Map (Old)',
+    href: '/promlert/schematic_old',
+    icon: 'mdi-map',
+  },
+  {
+    title: 'Entrance-Exit Routes',
+    href: '/promlert/cost_tolls',
+    icon: 'mdi-directions-fork',
+  },
+  {
+    title: 'Routes Data',
+    href: '/promlert/routes',
+    icon: 'mdi-contain',
+  },
+];
 
-  export default {
-    name: 'App',
+export default {
+  name: 'App',
 
-    props: {
-      menuId: Number,
-    },
+  props: {
+    menuId: Number,
+  },
 
-    data: () => ({
-      drawer: null,
-      routes,
-    }),
+  data: () => ({
+    drawer: null,
+    routes,
+  }),
 
-    created() {
-      //this.$vuetify.theme.dark = true
-    },
-  };
+  created() {
+    //this.$vuetify.theme.dark = true
+  },
+};
 </script>
