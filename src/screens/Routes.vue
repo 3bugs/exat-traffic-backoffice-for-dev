@@ -150,7 +150,38 @@ export default {
         },
         { // ฉลองรัช
           algRouteId: 3,
-          legs: []
+          legs: [
+            {
+              origin: "คลองประปา",
+              destination: "ศรีนครินทร์",
+              chunkIdList: []
+            },
+            {
+              origin: "คลองประปา",
+              destination: "สาธุประดิษฐ์ 3",
+              chunkIdList: []
+            },
+            {
+              origin: "สาธุประดิษฐ์ 3",
+              destination: "คลองประปา",
+              chunkIdList: []
+            },
+            {
+              origin: "สาธุประดิษฐ์ 3",
+              destination: "ศรีนครินทร์",
+              chunkIdList: []
+            },
+            {
+              origin: "ศรีนครินทร์",
+              destination: "คลองประปา",
+              chunkIdList: []
+            },
+            {
+              origin: "ศรีนครินทร์",
+              destination: "สาธุประดิษฐ์ 3",
+              chunkIdList: []
+            },
+          ]
         },
         { // บูรพาวิถี
           algRouteId: 6,
@@ -185,7 +216,7 @@ export default {
       });
     });
 
-    this.allOutputValue = JSON.stringify(this.routeDataList);
+    this.allOutputValue = `List chunkDataList = ${JSON.stringify(this.routeDataList)}`;
   },
   destroyed: function () {
   },
