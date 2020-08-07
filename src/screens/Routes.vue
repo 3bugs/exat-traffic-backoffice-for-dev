@@ -6,7 +6,7 @@
           v-model="currentTabIndex"
       >
         <v-tab
-            v-for="(item, index) in ['กรอก Chunk ID เอง', 'Chunk ID in Code']"
+            v-for="(item, index) in ['กรอก Chunk ID เอง', 'Generated Dart Code']"
             :key="`tab-${index}`"
         >
           {{ item }}
@@ -216,7 +216,7 @@ export default {
       });
     });
 
-    this.allOutputValue = `List chunkDataList = ${JSON.stringify(this.routeDataList)}`;
+    this.allOutputValue = `List chunkDataList = ${JSON.stringify(this.routeDataList)};`;
   },
   destroyed: function () {
   },
