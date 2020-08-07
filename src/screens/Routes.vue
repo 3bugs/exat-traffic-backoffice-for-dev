@@ -216,7 +216,7 @@ export default {
       });
     });
 
-    this.allOutputValue = `List chunkDataList = ${JSON.stringify(this.routeDataList)};`;
+    this.allOutputValue = `List _chunkDataList = ${JSON.stringify(this.routeDataList)};`;
   },
   destroyed: function () {
   },
