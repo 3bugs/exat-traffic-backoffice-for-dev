@@ -65,7 +65,7 @@ new Vue({
   computed: {
     viewComponent() {
       console.log(this.currentRoute);
-      const path = this.currentRoute.replace('/promlert', '');
+      const path = this.currentRoute.replace('/devtools', '');
       return routes[path] || NotFound
     }
   },

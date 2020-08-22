@@ -270,7 +270,7 @@
 
   const HEADER_HEIGHT = 65;
   const LEFT_PANE_WIDTH = 325;
-  const API_BASED_URL = 'http://163.47.9.26/api';
+  const API_BASED_URL = '/api';
   const axios = require('axios').default;
 
   Vue.use(VueWindowSize);
