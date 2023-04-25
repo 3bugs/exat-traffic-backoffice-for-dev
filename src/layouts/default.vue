@@ -70,17 +70,17 @@
 const routes = [
   {
     title: 'Schematic Map (Old)',
-    href: '/devtools/schematic_old',
+    href: '/schematic_old',
     icon: 'mdi-map',
   },
   {
     title: 'Entrance-Exit Routes',
-    href: '/devtools/cost_tolls',
+    href: '/cost_tolls',
     icon: 'mdi-directions-fork',
   },
   {
     title: 'Routes Data',
-    href: '/devtools/routes',
+    href: '/routes',
     icon: 'mdi-contain',
   },
 ];
