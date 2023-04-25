@@ -48,7 +48,7 @@
         dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>EXAT Traffic - Tools For Dev</v-toolbar-title>
+      <v-toolbar-title>EXAT Traffic DevTools - Made with ❤️by Promlert Lovichit</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
